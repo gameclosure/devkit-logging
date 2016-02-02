@@ -2,7 +2,7 @@ Useful logger!
 
 Example Usage
 
-```
+``` javascript
 var logging = require('devkit-logging');
 
 var logger = logging.get('test');
