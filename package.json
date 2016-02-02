@@ -1,0 +1,8 @@
+{
+  "name": "devkit-logging",
+  "dependencies": {
+    "printf": "^0.2.3",
+    "chalk": "^1.1.1",
+    "eyes": "git+https://github.com/weebygames/eyes.js"
+  }
+}
