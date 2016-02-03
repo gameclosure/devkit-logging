@@ -42,7 +42,7 @@ class Logger extends Writable {
     // add logging functions
     Object.keys(LEVELS).forEach(key => {
       let logLevel = LEVELS[key];
-      this[key.toLowerCase()] = () => {
+      this[key.toLowerCase()] = function() {
         let currentLevel = this.getLevel();
         if (currentLevel >= logLevel.level) {
           let prefix;
@@ -51,7 +51,7 @@ class Logger extends Writable {
           }
           this._log(prefix, arguments);
         }
-      };
+      }.bind(this);
     });
   };
 
