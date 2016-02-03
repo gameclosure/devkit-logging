@@ -3,10 +3,20 @@
 var printf = require('printf');
 var chalk = require('chalk');
 
-module.exports = {
+
+module.exports = {}
+
+let levels = {
   SILLY: {
     prefix: chalk.gray('[silly] '),
-    level: 5
+    level: 5,
+    onSet: function() {
+      // Enable bluebird logging
+      process.env.BLUEBIRD_DEBUG = 1;
+    },
+    onUnset: function() {
+      process.env.BLUEBIRD_DEBUG = 0;
+    }
   },
   DEBUG: {
     prefix: chalk.gray('[debug] '),
@@ -35,36 +45,62 @@ module.exports = {
     level: 10
   }
 };
+// expose the levels on the top level export
+Object.keys(levels).forEach((k) => {
+  module.exports[k] = levels[k];
+});
 
-var defaultLogLevel = module.exports.INFO.level;
+
+let defaultLogLevel = module.exports.INFO;
+
+module.exports.intToLevelObj = function(levelInt) {
+  let keys = Object.keys(levels);
+  for (let i = 0; i < keys.length; i++) {
+    let k = keys[i];
+    let v = levels[k];
+    if (v.level === levelInt) {
+      return v;
+    }
+  }
+  return null;
+};
 
 /**
  * @param level A number, a devkit-logging level object, or name of a devkit-logging level
  */
 module.exports.setDefaultLevel = function(level) {
-  var type = typeof level;
+  let type = typeof level;
+  let logLevel;
 
   if (type === 'number') {
-    defaultLogLevel = level;
-    return;
+    logLevel = module.exports.intToLevelObj(level);
   }
-
-  if (type === 'string') {
-    var logLevel = module.exports[level.toUpperCase()];
+  else if (type === 'string') {
+    let logLevel = module.exports[level.toUpperCase()];
     if (logLevel) {
-      defaultLogLevel = logLevel.level;
-      return;
+      logLevel = logLevel;
     }
   }
-
-  if (level && level.level !== undefined) {
-    defaultLogLevel = level.level;
-    return;
+  // Custom object
+  else if (level && level.level !== undefined && typeof level.prefix === 'string') {
+    logLevel = level;
   }
 
-  throw new Error('unknown log level: ' + level);
+  // Error if we cant find the requested level
+  if (!logLevel) {
+    throw new Error('unknown log level: ' + level);
+  }
+
+  // Set the default and fire event handlers (maybe)
+  if (defaultLogLevel.onUnset) {
+    defaultLogLevel.onUnset();
+  }
+  defaultLogLevel = logLevel;
+  if (logLevel.onSet) {
+    logLevel.onSet();
+  }
 };
 
 module.exports.getDefaultLevel = function() {
-  return defaultLogLevel;
+  return defaultLogLevel.level;
 };
