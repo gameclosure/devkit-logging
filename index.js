@@ -5,7 +5,7 @@ var defaultFuncs = require('./src/defaultFuncs');
 var errorToString = require('./src/toString').errorToString;
 var LEVELS = require('./levels');
 var Logger = require('./src/Logger');
-
+var trace = require('./src/trace');
 
 module.exports.setDefaultLevel = LEVELS.setDefaultLevel;
 module.exports.getDefaultLevel = LEVELS.getDefaultLevel;
@@ -28,4 +28,8 @@ module.exports.get = function (name, isSilent, buffers) {
 module.exports.install = function (defaultName) {
   var logger = module.exports.get(defaultName);
   console.log = logger.log.bind(logger);
+};
+
+module.exports.setTraceEnabled = function(flag) {
+  return trace.setEnabled(flag);
 };
