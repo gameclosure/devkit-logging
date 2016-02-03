@@ -1,32 +1,32 @@
 'use strict';
 
-var path = require('path');
-var chalk = require('chalk');
-var printf = require('printf');
+let path = require('path');
+let chalk = require('chalk');
+let printf = require('printf');
 
-module.exports.errorToString = function (error) {
+module.exports.errorToString = function(error) {
   if (!error.stack) {
     return error;
   }
 
-  var out = [];
+  let out = [];
 
   try {
-    var errStr = error.stack;
-    var lines = errStr.split('\n');
-    var i = 0;
-    var msg = [];
+    let errStr = error.stack;
+    let lines = errStr.split('\n');
+    let i = 0;
+    let msg = [];
     while (lines[i] && !/^\s*at/.test(lines[i])) {
       msg.push(lines[i]);
       ++i;
     }
 
-    var parser = /^\s*at (.*?)\s+\((.*?)\)/;
+    let parser = /^\s*at (.*?)\s+\((.*?)\)/;
     lines = lines.slice(i).reverse();
-    var data = lines.map(function (line) {
-      var result = {};
-      var detailsStr;
-      var match = line.match(parser);
+    let data = lines.map((line) => {
+      let result = {};
+      let detailsStr;
+      let match = line.match(parser);
       if (match) {
         result.func = match[1];
         detailsStr = match[2];
@@ -34,10 +34,10 @@ module.exports.errorToString = function (error) {
         detailsStr = line;
       }
 
-      var details = detailsStr.match(/(?:\s*at )?(.*?):(\d+):(\d+)/);
+      let details = detailsStr.match(/(?:\s*at )?(.*?):(\d+):(\d+)/);
       if (details && details[1]) {
-        var filename = details[1]; // path.relative(exports.paths.root(), match[2]);
-        var dirname = path.dirname(filename);
+        let filename = details[1]; // path.relative(exports.paths.root(), match[2]);
+        let dirname = path.dirname(filename);
         result.file = path.basename(filename);
         result.line = details[2];
         result.fullPath = (dirname == '.' ? '' : dirname + path.sep)
@@ -49,9 +49,9 @@ module.exports.errorToString = function (error) {
       return result;
     });
 
-    var n = data.length;
+    let n = data.length;
     if (n) {
-      data.map(function (data, i) {
+      data.map((data, i) => {
         if (typeof data == 'string') {
           out.push(data);
         } else {
@@ -61,11 +61,11 @@ module.exports.errorToString = function (error) {
         }
       });
 
-      var lastLine = data[n - 1];
+      let lastLine = data[n - 1];
       if (lastLine) {
-        var indent = new Array(n).join(' ');
-        var msgLines = msg.join('\n').split('\n');
-        var msgText = msgLines.join('\n   ' + indent);
+        let indent = new Array(n).join(' ');
+        let msgLines = msg.join('\n').split('\n');
+        let msgText = msgLines.join('\n   ' + indent);
         out.push(indent
           + chalk.red(
             msgText
@@ -75,7 +75,7 @@ module.exports.errorToString = function (error) {
     } else {
       out.push(error.stack);
       if (error.cause && typeof error.cause == 'object') {
-        Object.keys(error.cause).forEach(function (key) {
+        Object.keys(error.cause).forEach(key => {
           out.push(printf(chalk.yellow('%15s') + ': %s', key, error.cause[key]));
         });
       }

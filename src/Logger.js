@@ -1,17 +1,17 @@
 'use strict';
 
-var Writable = require('stream').Writable;
+let Writable = require('stream').Writable;
 
-var eyes = require('eyes');
+let eyes = require('eyes');
 
-var LEVELS = require('../levels');
-var defaultFuncs = require('./defaultFuncs');
-var prefixes = require('./prefixes');
-var LoggerStream = require('./LoggerStream');
-var errorToString = require('./toString').errorToString;
+let LEVELS = require('../levels');
+let defaultFuncs = require('./defaultFuncs');
+let prefixes = require('./prefixes');
+let LoggerStream = require('./LoggerStream');
+let errorToString = require('./toString').errorToString;
 
 
-var inspect = eyes.inspector({
+let inspect = eyes.inspector({
   styles: {                 // Styles applied to stdout
     all:     'white',      // Overall style applied to everything
     label:   'underline', // Inspection labels, like 'array' in `array: [1, 2, 3]`
@@ -40,19 +40,19 @@ class Logger extends Writable {
     this._level = null;
 
     // add logging functions
-    Object.keys(LEVELS).forEach(function(key) {
-      var logLevel = LEVELS[key];
-      this[key.toLowerCase()] = function() {
-        var currentLevel = this.getLevel();
+    Object.keys(LEVELS).forEach(key => {
+      let logLevel = LEVELS[key];
+      this[key.toLowerCase()] = () => {
+        let currentLevel = this.getLevel();
         if (currentLevel >= logLevel.level) {
-          var prefix;
+          let prefix;
           if (currentLevel >= (logLevel.prefixLevel || logLevel.level)){
             prefix = logLevel.prefix;
           }
           this._log(prefix, arguments);
         }
-      }.bind(this);
-    }.bind(this));
+      };
+    });
   };
 
   // adds writable streams to this logger that pipe to the console unless
@@ -79,7 +79,7 @@ class Logger extends Writable {
     }
 
     if (typeof str == 'object') {
-      var currentLevel = this.getLevel();
+      let currentLevel = this.getLevel();
       return currentLevel >= LEVELS.DEBUG.level ? inspect(str) : str;
     }
 
@@ -103,10 +103,10 @@ class Logger extends Writable {
   };
 
   _write (chunk, encoding, cb) {
-    var buffer = this._buffer || (this._buffer = '');
+    let buffer = this._buffer || (this._buffer = '');
     buffer += chunk.toString();
     while (true) {
-      var splitAt = buffer.indexOf('\n');
+      let splitAt = buffer.indexOf('\n');
       if (splitAt >= 0) {
         // stderr
         defaultFuncs.error(prefixes.getRenderPrefix(this._prefix) + ' ' + this.format(buffer.substring(0, splitAt)));

@@ -1,13 +1,13 @@
 'use strict';
 
-var chalk = require('chalk');
-var printf = require('printf');
+let chalk = require('chalk');
+let printf = require('printf');
 
-var LEVELS = require('../levels');
+let LEVELS = require('../levels');
 
-var _lastPrefix;
+let _lastPrefix;
 
-module.exports.getPrefix = function (tag) {
+module.exports.getPrefix = function(tag) {
   return chalk.cyan(printf('%18s ', tag && '[' + tag + ']' || ''));
 };
 

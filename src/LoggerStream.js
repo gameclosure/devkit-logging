@@ -7,13 +7,13 @@ class LoggerStream {
     this._buffers = {};
 
     // add buffer instances
-    buffers.forEach(function (name) {
+    buffers.forEach(name => {
       if (!this[name]) {
         this[name] = new Writable();
         this[name]._write = bind(this, '_buffer', name);
         this._buffers[name] = [];
       }
-    }, this);
+    });
   };
 
   get (name) {
@@ -21,7 +21,7 @@ class LoggerStream {
   };
 
   _buffer (buffer, chunk, encoding, cb) {
-    var data = chunk.toString();
+    let data = chunk.toString();
     if (this._buffers[buffer]) {
       this._buffers[buffer].push(data);
     }

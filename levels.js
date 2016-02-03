@@ -1,7 +1,7 @@
 'use strict';
 
-var printf = require('printf');
-var chalk = require('chalk');
+let printf = require('printf');
+let chalk = require('chalk');
 
 
 module.exports = {}
@@ -10,11 +10,11 @@ let levels = {
   SILLY: {
     prefix: chalk.gray('[silly] '),
     level: 5,
-    onSet: function() {
+    onSet: () => {
       // Enable bluebird logging
       process.env.BLUEBIRD_DEBUG = 1;
     },
-    onUnset: function() {
+    onUnset: () => {
       process.env.BLUEBIRD_DEBUG = 0;
     }
   },
@@ -46,7 +46,7 @@ let levels = {
   }
 };
 // expose the levels on the top level export
-Object.keys(levels).forEach((k) => {
+Object.keys(levels).forEach(function(k) {
   module.exports[k] = levels[k];
 });
 

@@ -13,7 +13,7 @@ let matchesTraceName = function(testStr) {
     return true;
   }
 
-  for (var i = 0, j = traceNames.length; i < j; i++) {
+  for (let i = 0, j = traceNames.length; i < j; i++) {
     if (testStr.indexOf(traceNames[i]) === 0) {
       return true;
     }
@@ -22,9 +22,9 @@ let matchesTraceName = function(testStr) {
 };
 
 let devkitTrace = function() {
-  var stack = callsite();
-  var callSite = stack[1];
-  var callerPath = callSite.getFileName();
+  let stack = callsite();
+  let callSite = stack[1];
+  let callerPath = callSite.getFileName();
 
   if (callerPath.indexOf(rootDir) === 0) {
     callerPath = callerPath.substring(rootDir.length + 1, callerPath.length);
@@ -34,11 +34,12 @@ let devkitTrace = function() {
     return;
   }
 
-  var args = Array.prototype.map.call(arguments, function(arg) {
+  let args = Array.prototype.map.call(arguments, arg => {
+    console.log('ARG', arg)
     return arg;
   });
 
-  var prefix = callerPath + ':' + callSite.getLineNumber() + '|';
+  let prefix = callerPath + ':' + callSite.getLineNumber() + '|';
   args.unshift(prefix);
 
   console.log.apply(console, args);
@@ -63,7 +64,7 @@ module.exports.setEnabled = function(flag, names) {
 
     GLOBAL.trace = devkitTrace;
   } else {
-    GLOBAL.trace = function () {};
+    GLOBAL.trace = function() {};
   }
 };
 

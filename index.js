@@ -1,11 +1,11 @@
 'use strict';
 
-var defaultFuncs = require('./src/defaultFuncs');
+let defaultFuncs = require('./src/defaultFuncs');
 
-var errorToString = require('./src/toString').errorToString;
-var LEVELS = require('./levels');
-var Logger = require('./src/Logger');
-var trace = require('./src/trace');
+let errorToString = require('./src/toString').errorToString;
+let LEVELS = require('./levels');
+let Logger = require('./src/Logger');
+let trace = require('./src/trace');
 
 module.exports.setDefaultLevel = LEVELS.setDefaultLevel;
 module.exports.getDefaultLevel = LEVELS.getDefaultLevel;
@@ -15,9 +15,9 @@ module.exports.getDefaultLevel = LEVELS.getDefaultLevel;
  * by things that log. Note: always print to stderr. stdout is for passing stuff
  * between our processes.
  */
-var _loggers = {};
-module.exports.get = function (name, isSilent, buffers) {
-  var logger = _loggers[name] || (_loggers[name] = new Logger(name));
+let _loggers = {};
+module.exports.get = function(name, isSilent, buffers) {
+  let logger = _loggers[name] || (_loggers[name] = new Logger(name));
   if (buffers) {
     logger.setBuffers(buffers, isSilent);
   }
@@ -25,8 +25,8 @@ module.exports.get = function (name, isSilent, buffers) {
   return logger;
 };
 
-module.exports.install = function (defaultName) {
-  var logger = module.exports.get(defaultName);
+module.exports.install = function(defaultName) {
+  let logger = module.exports.get(defaultName);
   console.log = logger.log.bind(logger);
 };
 
