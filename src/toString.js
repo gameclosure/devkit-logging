@@ -40,7 +40,7 @@ module.exports.errorToString = function(error) {
         let dirname = path.dirname(filename);
         result.file = path.basename(filename);
         result.line = details[2];
-        result.fullPath = (dirname == '.' ? '' : dirname + path.sep)
+        result.fullPath = (dirname === '.' ? '' : dirname + path.sep)
                         + chalk.white(result.file + ':' + result.line);
       } else {
         result.details = detailsStr;
@@ -52,7 +52,7 @@ module.exports.errorToString = function(error) {
     let n = data.length;
     if (n) {
       data.map((data, i) => {
-        if (typeof data == 'string') {
+        if (typeof data === 'string') {
           out.push(data);
         } else {
           out.push(new Array(i + 1).join(' ')
@@ -74,7 +74,7 @@ module.exports.errorToString = function(error) {
       }
     } else {
       out.push(error.stack);
-      if (error.cause && typeof error.cause == 'object') {
+      if (error.cause && typeof error.cause === 'object') {
         Object.keys(error.cause).forEach(key => {
           out.push(printf(chalk.yellow('%15s') + ': %s', key, error.cause[key]));
         });

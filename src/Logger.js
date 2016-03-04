@@ -53,21 +53,21 @@ class Logger extends Writable {
         }
       }.bind(this);
     });
-  };
+  }
 
   // adds writable streams to this logger that pipe to the console unless
   // isSilent is set to true
   createStreams (buffers, isSilent) {
     return new LoggerStream(this, buffers, isSilent);
-  };
+  }
 
   setLevel (level) {
     this._level = level;
-  };
+  }
 
   getLevel () {
     return this._level || LEVELS.getDefaultLevel();
-  };
+  }
 
   format (str) {
     if (str instanceof Error) {
@@ -78,7 +78,7 @@ class Logger extends Writable {
       }
     }
 
-    if (typeof str == 'object') {
+    if (typeof str === 'object') {
       let currentLevel = this.getLevel();
       return currentLevel >= LEVELS.DEBUG.level ? inspect(str) : str;
     }
@@ -87,7 +87,7 @@ class Logger extends Writable {
     return ('' + str)
       .split('\n')
       .join('\n ' + LEVELS.NONE.prefix);
-  };
+  }
 
   _log (prefix, args) {
     // Run custom formatter on each individual argument
@@ -100,7 +100,7 @@ class Logger extends Writable {
     // Add the render prefix (coloring, mostly)
     args.unshift(prefixes.getRenderPrefix(this._prefix));
     defaultFuncs.error.apply(defaultFuncs.console, args);
-  };
+  }
 
   _write (chunk, encoding, cb) {
     let buffer = this._buffer || (this._buffer = '');
@@ -119,15 +119,15 @@ class Logger extends Writable {
     this._buffer = buffer;
 
     cb && cb();
-  };
+  }
 
   getPrefix () {
     return this._prefix;
-  };
+  }
 
   toString () {
     return this._buffer.join('\n');
-  };
-};
+  }
+}
 
 module.exports = Logger;

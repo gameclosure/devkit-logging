@@ -35,7 +35,7 @@ let devkitTrace = function() {
   }
 
   let args = Array.prototype.map.call(arguments, arg => {
-    console.log('ARG', arg)
+    console.log('ARG', arg);
     return arg;
   });
 

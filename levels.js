@@ -76,9 +76,9 @@ module.exports.setDefaultLevel = function(level) {
     logLevel = module.exports.intToLevelObj(level);
   }
   else if (type === 'string') {
-    let logLevel = module.exports[level.toUpperCase()];
-    if (logLevel) {
-      logLevel = logLevel;
+    let inferredLogLevel = levels[level.toUpperCase()];
+    if (inferredLogLevel) {
+      logLevel = inferredLogLevel;
     }
   }
   // Custom object
@@ -88,7 +88,7 @@ module.exports.setDefaultLevel = function(level) {
 
   // Error if we cant find the requested level
   if (!logLevel) {
-    throw new Error('unknown log level: ' + level);
+    throw new Error('unknown log level: ' + level + ' (try: ' + Object.keys(levels) +')');
   }
 
   // Set the default and fire event handlers (maybe)

@@ -6,5 +6,11 @@
     "chalk": "^1.1.1",
     "eyes": "git+https://github.com/weebygames/eyes.js",
     "printf": "^0.2.3"
+  },
+  "devDependencies": {
+    "mocha": "^2.4.5"
+  },
+  "scripts": {
+    "test": "mocha"
   }
 }

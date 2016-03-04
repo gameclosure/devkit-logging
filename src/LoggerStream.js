@@ -10,15 +10,15 @@ class LoggerStream {
     buffers.forEach(name => {
       if (!this[name]) {
         this[name] = new Writable();
-        this[name]._write = bind(this, '_buffer', name);
+        this[name]._write = this._buffer.bind(name);
         this._buffers[name] = [];
       }
     });
-  };
+  }
 
   get (name) {
     return this._buffers[name].join('');
-  };
+  }
 
   _buffer (buffer, chunk, encoding, cb) {
     let data = chunk.toString();
@@ -31,7 +31,7 @@ class LoggerStream {
     }
 
     cb && cb();
-  };
-};
+  }
+}
 
 module.exports = LoggerStream;
