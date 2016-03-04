@@ -7,6 +7,7 @@ let LEVELS = require('./levels');
 let Logger = require('./src/Logger');
 let trace = require('./src/trace');
 
+module.exports.LEVELS = LEVELS;
 module.exports.setDefaultLevel = LEVELS.setDefaultLevel;
 module.exports.getDefaultLevel = LEVELS.getDefaultLevel;
 
