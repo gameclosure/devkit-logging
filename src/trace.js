@@ -4,7 +4,7 @@ let path = require('path');
 let callsite = require('callsite');
 
 
-let rootDir = path.dirname(require.main.filename);
+let rootDir = path.dirname(require.main ? require.main.filename : process.cwd());
 let traceNames = [];
 
 
