@@ -50,10 +50,13 @@ let devkitTrace = function() {
  * @param  {String}   names
  */
 module.exports.setEnabled = function(flag, names) {
+  if (typeof flag === 'string') {
+    flag = flag.toLowerCase();
+  }
   process.env.DEVKIT_TRACE = flag || false;
   process.env.DEVKIT_TRACE_NAMES = names || '';
 
-  if (flag) {
+  if (flag === true || flag === 'true') {
     // parse trace names in to a list
     let traceNamesRaw = process.env.DEVKIT_TRACE_NAMES;
     if (traceNamesRaw) {
